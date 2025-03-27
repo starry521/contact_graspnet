@@ -1,0 +1,35 @@
+# checkpoint dir
+ckpt_dir: "checkpoints/scene_test_2048_bs3_hor_sigma_001"
+
+# GPU
+gpu_id: 0
+
+# Camera Matrix with intrinsics to convert depth to point cloud
+K: null
+
+# crop point cloud at a minimum/maximum z distance from camera to filter out outlier points.
+z_range: [0.2,1.8]
+
+# Crop 3D local regions around given segments.
+local_regions: True
+
+# Filter and assign grasp contacts according to segmap.
+filter_grasps: True
+
+# When extracting local_regions, ignore segments at depth map boundary.
+skip_border_objects: False
+
+# forward_passes: Number of forward passes to run on each point cloud. Default: 1
+forward_passes: 1
+
+# only return grasps from specified segmap_id.
+segmap_id: 0
+
+# overwrite config parameters
+arg_configs: []
+
+# visualization
+visualize: False
+
+# control terminal output
+verbose: False

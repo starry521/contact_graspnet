@@ -6,4 +6,4 @@ checkpoints/*
 .vscode
 test_data/
 pointnet2/
-
+data.pkl

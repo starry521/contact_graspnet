@@ -307,28 +307,28 @@ def load_available_input_data(p, K=None):
             cam_K = eval(K)
         cam_K = np.array(K).reshape(3,3)
 
-    if '.np' in p:
+    if '.npy' in p:
         data = np.load(p, allow_pickle=True)
-        if '.npz' in p:
-            keys = data.files
+        # if '.npz' in p:
+        #     keys = data.files
+        # else:
+        keys = []
+        if len(data.shape) == 0:
+            data = data.item()
+            keys = data.keys()
+        elif data.shape[-1] == 3:
+            pc_full = data
         else:
-            keys = []
-            if len(data.shape) == 0:
-                data = data.item()
-                keys = data.keys()
-            elif data.shape[-1] == 3:
-                pc_full = data
-            else:
-                depth = data
+            depth = data
 
         if 'depth' in keys:
             depth = data['depth']
             if K is None and 'K' in keys:
                 cam_K = data['K'].reshape(3,3)
-            if 'segmap' in keys:    
-                segmap = data['segmap']
+            # if 'segmap' in keys:    
+            #     segmap = data['segmap']
             if 'seg' in keys:    
-                segmap = data['seg']
+                segmap = data['seg'].astype(np.int8)
             if 'rgb' in keys:    
                 rgb = data['rgb']
                 rgb = np.array(cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB))
@@ -336,16 +336,16 @@ def load_available_input_data(p, K=None):
             pc_full = np.array(data['xyz']).reshape(-1,3)
             if 'xyz_color' in keys:
                 pc_colors = data['xyz_color']
-    elif '.png' in p:
-        if os.path.exists(p.replace('depth', 'label')):
-            # graspnet data
-            depth, rgb, segmap, K = load_graspnet_data(p)
-        elif os.path.exists(p.replace('depths', 'images').replace('npy', 'png')):
-            rgb = np.array(Image.open(p.replace('depths', 'images').replace('npy', 'png')))
-        else:
-            depth = np.array(Image.open(p))
+    # elif '.png' in p:
+    #     if os.path.exists(p.replace('depth', 'label')):
+    #         # graspnet data
+    #         depth, rgb, segmap, K = load_graspnet_data(p)
+    #     elif os.path.exists(p.replace('depths', 'images').replace('npy', 'png')):
+    #         rgb = np.array(Image.open(p.replace('depths', 'images').replace('npy', 'png')))
+    #     else:
+    #         depth = np.array(Image.open(p))
     else:
-        raise ValueError('{} is neither png nor npz/npy file'.format(p))
+        raise ValueError('{} is not npy file'.format(p))
     
     return segmap, rgb, depth, cam_K, pc_full, pc_colors
 
