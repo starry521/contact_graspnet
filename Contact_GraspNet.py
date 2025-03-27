@@ -101,17 +101,3 @@ if __name__=="__main__":
         "contact_pts": contact_pts
     }
     serialize(output, "./data.pkl")
-    
-
-# if __name__ == "__main__":
-    
-#     # Init
-#     with open("./Config/default.yaml", "r") as file:
-#         config = CN.load_cfg(file)
-    
-#     grasp_net = ContactGraspNet(config)
-    
-#     input_path = 'test_data/0.npy'
-    
-#     # Predict
-#     pred_grasps_cam, scores, contact_pts = grasp_net.predict(input_path)
